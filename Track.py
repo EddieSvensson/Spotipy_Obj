@@ -1,8 +1,7 @@
 import Artist
-import Album
 import spotipy
-import urllib.request
-import winsound
+import webbrowser
+
 
 
 class Track:
@@ -14,18 +13,11 @@ class Track:
         self.name = track['name']
         self.length = track['duration_ms']
         self.url = track['preview_url']
-        self.preview = open(self.name + '.mp3')
-
-    def download_track(self):
-        response = urllib.request.urlopen(self.url)
-        data = response.read()
-        file = self.preview
-        file.read(data)
-        return data
+        self.albumURI = track['album']['uri']
+        self.artists = Artist.create_from_list(track['artists'])
 
     def play(self):
-        self.download_track()
-        winsound.PlaySound(self.preview, winsound.SND_FILENAME)
+        webbrowser.open_new_tab(self.url)
 
 
 def create_from_list(data):
